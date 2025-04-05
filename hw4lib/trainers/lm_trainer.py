@@ -117,7 +117,7 @@ class LMTrainer(BaseTrainer):
             
             # TODO: Backpropagate the loss
             #### Use AMP
-            # self.scaler = NotImplementedError
+            # self.scaler.scale(loss).backward()
             loss.backward()
         
             # Only update weights after accumulating enough gradients
