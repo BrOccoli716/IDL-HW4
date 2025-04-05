@@ -67,11 +67,13 @@ class SelfAttentionLayer(nn.Module):
         '''
         # TODO: Implement forward: Follow the figure in the writeup
         residual = x
+        self.norm.to(x.device)
         x = self.norm(x)
         
         # TODO: Self-attention
         # Be sure to use the correct arguments for the multi-head attention layer
         # Set need_weights to True and average_attn_weights to True so we can get the attention weights 
+        self.mha.to(x.device)
         x, mha_attn_weights = self.mha(query=x, key=x, value=x, key_padding_mask=key_padding_mask, attn_mask=attn_mask, need_weights=True, average_attn_weights=True)
         
         # NOTE: For some regularization you can apply dropout and then add residual connection
@@ -135,11 +137,13 @@ class CrossAttentionLayer(nn.Module):
         '''
         # TODO: Implement forward: Follow the figure in the writeup
         residual = x
+        self.norm.to(x.device)
         x = self.norm(x)  # y is the output of encoder, which has already been normed!
 
         # TODO: Cross-attention
         # Be sure to use the correct arguments for the multi-head attention layer
         # Set need_weights to True and average_attn_weights to True so we can get the attention weights 
+        self.mha.to(x.device)
         x, mha_attn_weights = self.mha(query=x, key=y, value=y, key_padding_mask=key_padding_mask, attn_mask=attn_mask, need_weights=True, average_attn_weights=True)
         
         # NOTE: For some regularization you can apply dropout and then add residual connection
@@ -208,9 +212,11 @@ class FeedForwardLayer(nn.Module):
         ''' 
         # TODO: Implement forward: Follow the figure in the writeup
         residual = x
+        self.norm.to(x.device)
         x = self.norm(x)
 
         # NOTE: For some regularization you can apply dropout to the output of the feed-forward network before adding the residual connection
+        self.ffn.to(x.device)
         x = self.ffn(x)
         x = residual + self.dropout(x)
 
