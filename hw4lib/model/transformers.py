@@ -368,7 +368,7 @@ class EncoderDecoderTransformer(nn.Module):
         ctc_logits = self.ctc_head(x_enc)
         ctc_input = {
             'log_probs': ctc_logits.permute(1, 0, 2),
-            'lengths': source_lengths
+            'lengths': x_enc_lengths
         }
 
         # TODO: Return the encoded representation, padding mask, running attention weights, and CTC inputs (see docstring)
