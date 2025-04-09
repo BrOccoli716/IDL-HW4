@@ -128,11 +128,11 @@ class ASRTrainer(BaseTrainer):
                 
                 # TODO: Calculate CTC loss if needed
                 if self.ctc_weight > 0:
-                    targets_ctc = []
-                    for b in range(ctc_inputs['log_probs'].shape[1]):  # batch_size
-                        targets_ctc.append(targets_golden[b, :transcript_lengths[b]])
-                    targets_ctc = torch.cat(targets_ctc)
-                    ctc_loss = self.ctc_criterion(ctc_inputs['log_probs'], targets_ctc, ctc_inputs['lengths'], transcript_lengths)
+                    # targets_ctc = []
+                    # for b in range(ctc_inputs['log_probs'].shape[1]):  # batch_size
+                    #     targets_ctc.append(targets_golden[b, :transcript_lengths[b]])
+                    # targets_ctc = torch.cat(targets_ctc)
+                    ctc_loss = self.ctc_criterion(ctc_inputs['log_probs'], targets_golden, ctc_inputs['lengths'], transcript_lengths)
                     loss = ce_loss + self.ctc_weight * ctc_loss
                 else:
                     ctc_loss = torch.tensor(0.0)
