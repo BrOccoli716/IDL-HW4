@@ -43,7 +43,7 @@ class SelfAttentionLayer(nn.Module):
         # TODO: Implement __init__
         
         # TODO: Initialize the multi-head attention mechanism (use nn.MultiheadAttention)
-        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True).to('cuda')
+        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout).to('cuda')
         
         # TODO: Initialize the normalization layer (use nn.LayerNorm)
         self.norm = nn.LayerNorm(d_model).to('cuda')
@@ -112,7 +112,7 @@ class CrossAttentionLayer(nn.Module):
         # TODO: Implement __init__
         
         # TODO: Initialize the multi-head attention mechanism (use nn.MultiheadAttention)
-        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True).to('cuda')
+        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout).to('cuda')
         
         # TODO: Initialize the normalization layer (use nn.LayerNorm)
         self.norm = nn.LayerNorm(d_model).to('cuda')
