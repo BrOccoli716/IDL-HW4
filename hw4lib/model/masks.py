@@ -29,7 +29,7 @@ def PadMask(padded_input, input_lengths):
     N, T = padded_input.shape[:2]
     device = padded_input.device
 
-    range_row = torch.arange(T, device=device).unsqueeze(0)  # shape: (1, T)
+    range_row = torch.arange(T, device=device).unsqueeze(0).expand(N, T)  # shape: (1, T)
     input_lengths = input_lengths.unsqueeze(1)  # shape: (N, 1)
 
     mask = range_row >= input_lengths
