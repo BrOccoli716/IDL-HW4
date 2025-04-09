@@ -53,8 +53,8 @@ class SelfAttentionDecoderLayer(nn.Module):
         # TODO: Implement __init__
        
         # TODO: Initialize the sublayers      
-        self.self_attn = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout) # Masked self-attention layer
-        self.ffn = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout) # Feed-forward network
+        self.self_attn = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Masked self-attention layer
+        self.ffn = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout).to('cuda') # Feed-forward network
         # raise NotImplementedError # Remove once implemented
 
     def forward(self, x: torch.Tensor, key_padding_mask: Optional[torch.Tensor] = None, attn_mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -70,9 +70,9 @@ class SelfAttentionDecoderLayer(nn.Module):
             mha_attn_weights (torch.Tensor): The attention weights. shape: (batch_size, seq_len, seq_len)   
         '''
         # TODO: Implement forward: Follow the figure in the writeup
-        self.self_attn.to(x.device)
+        # self.self_attn.to(x.device)
         x, mha_attn_weights = self.self_attn(x, key_padding_mask=key_padding_mask, attn_mask=attn_mask)
-        self.ffn.to(x.device)
+        # self.ffn.to(x.device)
         x = self.ffn(x)
         
         # TODO: Return the output tensor and attention weights
@@ -98,9 +98,9 @@ class CrossAttentionDecoderLayer(nn.Module):
         # TODO: Implement __init__
 
         # TODO: Initialize the sublayers  
-        self.self_attn  = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout) # Masked self-attention layer
-        self.cross_attn = CrossAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout) # Cross-attention layer
-        self.ffn        = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout) # Feed-forward network
+        self.self_attn  = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Masked self-attention layer
+        self.cross_attn = CrossAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Cross-attention layer
+        self.ffn        = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout).to('cuda') # Feed-forward network
         # raise NotImplementedError # Remove once implemented
 
     def forward(self, x: torch.Tensor, enc_output: torch.Tensor, dec_key_padding_mask: Optional[torch.Tensor] = None, enc_key_padding_mask: Optional[torch.Tensor] = None, attn_mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
@@ -118,11 +118,11 @@ class CrossAttentionDecoderLayer(nn.Module):
             cross_attn_weights (torch.Tensor): The attention weights. shape: (batch_size, seq_len, seq_len)    
         '''
         # TODO: Implement forward: Follow the figure in the writeup
-        self.self_attn.to(x.device)
+        # self.self_attn.to(x.device)
         x, self_attn_weights  = self.self_attn(x, key_padding_mask=dec_key_padding_mask, attn_mask=attn_mask)
-        self.cross_attn.to(x.device)
+        # self.cross_attn.to(x.device)
         x, cross_attn_weights = self.cross_attn(x, y=enc_output, key_padding_mask=enc_key_padding_mask)  # attention (causal) mask is not needed here!
-        self.ffn.to(x.device)
+        # self.ffn.to(x.device)
         x = self.ffn(x)
 
         # TODO: Return the output tensor and attention weights    
