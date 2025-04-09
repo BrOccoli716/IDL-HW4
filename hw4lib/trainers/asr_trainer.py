@@ -58,17 +58,11 @@ class ASRTrainer(BaseTrainer):
         super().__init__(model, tokenizer, config, run_name, config_file, device)
 
         # TODO: Implement the __init__ method
-        self.model = model.to(device)
-        self.tokenizer = tokenizer
-        self.config = config
-        self.run_name = run_name
-        self.config_file = config_file
-        self.device = device
         
         # TODO: Initialize CE loss
         # How would you set the ignore_index? 
         # Use value in config to set the label_smoothing argument
-        self.ce_criterion = nn.CrossEntropyLoss(ignore_index=self.tokenizer.pad_id, label_smoothing=self.config['loss']['label_smoothing'])
+        self.ce_criterion = nn.CrossEntropyLoss(ignore_index=self.tokenizer.pad_id, label_smoothing=self.config['loss'].get('label_smoothing', 0.0)
         
         # TODO: Initialize CTC loss if needed
         # You can use the pad token id as the blank index
