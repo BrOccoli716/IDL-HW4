@@ -43,13 +43,13 @@ class SelfAttentionLayer(nn.Module):
         # TODO: Implement __init__
         
         # TODO: Initialize the multi-head attention mechanism (use nn.MultiheadAttention)
-        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout).to('cuda')
+        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout)  # .to('cuda')
         
         # TODO: Initialize the normalization layer (use nn.LayerNorm)
-        self.norm = nn.LayerNorm(d_model).to('cuda')
+        self.norm = nn.LayerNorm(d_model)  # .to('cuda')
         
         # TODO: Initialize the dropout layer
-        self.dropout = nn.Dropout(p=dropout).to('cuda')
+        self.dropout = nn.Dropout(p=dropout)  # .to('cuda')
         # raise NotImplementedError # Remove once implemented
 
 
@@ -112,13 +112,13 @@ class CrossAttentionLayer(nn.Module):
         # TODO: Implement __init__
         
         # TODO: Initialize the multi-head attention mechanism (use nn.MultiheadAttention)
-        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout).to('cuda')
+        self.mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True, dropout=dropout)  # .to('cuda')
         
         # TODO: Initialize the normalization layer (use nn.LayerNorm)
-        self.norm = nn.LayerNorm(d_model).to('cuda')
+        self.norm = nn.LayerNorm(d_model)  # .to('cuda')
         
         # TODO: Initialize the dropout layer
-        self.dropout = nn.Dropout(p=dropout).to('cuda')
+        self.dropout = nn.Dropout(p=dropout)  # .to('cuda')
         
         # raise NotImplementedError # Remove once implemented
 
@@ -188,17 +188,17 @@ class FeedForwardLayer(nn.Module):
         # TODO: Initialize the feed-forward network (use nn.Sequential)
         # See writeup for what layers to use
         self.ffn = nn.Sequential(
-            nn.Linear(in_features=d_model, out_features=d_ff).to('cuda'),
-            nn.GELU().to('cuda'),
-            nn.Dropout(p=dropout).to('cuda'),
-            nn.Linear(in_features=d_ff, out_features=d_model).to('cuda')
+            nn.Linear(in_features=d_model, out_features=d_ff),  # .to('cuda'),
+            nn.GELU(),  # .to('cuda'),
+            nn.Dropout(p=dropout),  # .to('cuda'),
+            nn.Linear(in_features=d_ff, out_features=d_model)  # .to('cuda')
         )
         
         # TODO: Initialize the normalization layer
-        self.norm = nn.LayerNorm(d_model).to('cuda')
+        self.norm = nn.LayerNorm(d_model)  # .to('cuda')
         
         # TODO: Initialize the dropout layer
-        self.dropout = nn.Dropout(p=dropout).to('cuda')
+        self.dropout = nn.Dropout(p=dropout)  # .to('cuda')
         # raise NotImplementedError # Remove once implemented
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
