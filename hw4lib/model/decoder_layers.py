@@ -53,8 +53,8 @@ class SelfAttentionDecoderLayer(nn.Module):
         # TODO: Implement __init__
        
         # TODO: Initialize the sublayers      
-        self.self_attn = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Masked self-attention layer
-        self.ffn = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout).to('cuda') # Feed-forward network
+        self.self_attn = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout)  # .to('cuda') # Masked self-attention layer
+        self.ffn = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout)  # .to('cuda') # Feed-forward network
         # raise NotImplementedError # Remove once implemented
 
     def forward(self, x: torch.Tensor, key_padding_mask: Optional[torch.Tensor] = None, attn_mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -98,9 +98,9 @@ class CrossAttentionDecoderLayer(nn.Module):
         # TODO: Implement __init__
 
         # TODO: Initialize the sublayers  
-        self.self_attn  = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Masked self-attention layer
-        self.cross_attn = CrossAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout).to('cuda') # Cross-attention layer
-        self.ffn        = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout).to('cuda') # Feed-forward network
+        self.self_attn  = SelfAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout)  # .to('cuda') # Masked self-attention layer
+        self.cross_attn = CrossAttentionLayer(d_model=d_model, num_heads=num_heads, dropout=dropout)  # .to('cuda') # Cross-attention layer
+        self.ffn        = FeedForwardLayer(d_model=d_model, d_ff=d_ff, dropout=dropout)  # .to('cuda') # Feed-forward network
         # raise NotImplementedError # Remove once implemented
 
     def forward(self, x: torch.Tensor, enc_output: torch.Tensor, dec_key_padding_mask: Optional[torch.Tensor] = None, enc_key_padding_mask: Optional[torch.Tensor] = None, attn_mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
