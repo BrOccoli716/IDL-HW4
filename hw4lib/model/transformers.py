@@ -118,7 +118,9 @@ class DecoderOnlyTransformer(nn.Module):
         self.num_layers      = num_layers
         
         # TODO: Create a ModuleList of decoder layers based on the number of layers
-        self.dec_layers     = [SelfAttentionDecoderLayer(d_model=d_model, num_heads=num_heads, d_ff=d_ff, dropout=dropout) for _ in range(self.num_layers)] # ModuleList of decoder layers
+        self.dec_layers     = nn.ModuleList([
+           SelfAttentionDecoderLayer(d_model=d_model, num_heads=num_heads, d_ff=d_ff, dropout=dropout)
+           for _ in range(self.num_layers)]) # ModuleList of decoder layers
 
         # TODO: Create target embedding and other layers
         self.target_embedding       = nn.Embedding(num_embeddings=self.num_classes, embedding_dim=d_model) # Target embedding
@@ -271,11 +273,15 @@ class EncoderDecoderTransformer(nn.Module):
 
         # TODO: Create encoder layers
         # Use ModuleList to create a list of encoder layers
-        self.enc_layers = [SelfAttentionEncoderLayer(d_model=d_model, num_heads=num_encoder_heads, d_ff=d_ff_encoder, dropout=dropout) for _ in range(self.num_encoder_layers)] # ModuleList of encoder layers
+        self.enc_layers = nn.ModuleList([
+           SelfAttentionEncoderLayer(d_model=d_model, num_heads=num_encoder_heads, d_ff=d_ff_encoder, dropout=dropout)
+           for _ in range(self.num_encoder_layers)]) # ModuleList of encoder layers
 
         # TODO: Create decoder layers
         # Use ModuleList to create a list of decoder layers
-        self.dec_layers = [CrossAttentionDecoderLayer(d_model=d_model, num_heads=num_decoder_heads, d_ff=d_ff_decoder, dropout=dropout) for _ in range(self.num_decoder_layers)] # ModuleList of decoder layers
+        self.dec_layers = nn.ModuleList([
+           CrossAttentionDecoderLayer(d_model=d_model, num_heads=num_decoder_heads, d_ff=d_ff_decoder, dropout=dropout)
+           for _ in range(self.num_decoder_layers)]) # ModuleList of decoder layers
 
         # TODO: Create source and target embeddings and other layers
         # Use SpeechEmbedding class to create the source embedding
