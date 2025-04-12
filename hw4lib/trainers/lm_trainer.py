@@ -103,8 +103,8 @@ class LMTrainer(BaseTrainer):
             #     # Hint: See the documentation for CrossEntropyLoss
             #     raw_loss = self.criterion(raw_preds.reshape(-1, raw_preds.shape[-1]), targets_golden.reshape(-1))
 
-            raw_preds, attn_weights = self.model(targets_shifted, lengths)
-            raw_loss = self.criterion(raw_preds.reshape(-1, raw_preds.shape[-1]), targets_golden.reshape(-1))
+                raw_preds, attn_weights = self.model(targets_shifted, lengths)
+                raw_loss = self.criterion(raw_preds.reshape(-1, raw_preds.shape[-1]), targets_golden.reshape(-1))
                 
             # Calculate metrics with raw loss (DO NOT MODIFY THIS)
             batch_tokens = lengths.sum().item()
@@ -142,12 +142,11 @@ class LMTrainer(BaseTrainer):
 
         # Handle any remaining gradients at the end of the epoch
         if (len(dataloader) % self.config['training']['gradient_accumulation_steps']) != 0:
-            # self.scaler.step(self.optimizer)
-            self.optimizer.step()
+            self.scaler.step(self.optimizer)
             # Only step scheduler here if it's not ReduceLROnPlateau
             if not isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
                 self.scheduler.step()
-            # self.scaler.update()
+            self.scaler.update()
             self.optimizer.zero_grad()
 
         # Compute final metrics
