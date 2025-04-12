@@ -92,8 +92,7 @@ class LMTrainer(BaseTrainer):
             targets_golden = targets_golden.to(self.device)  # shape: (batch_size, max_len)
             lengths = lengths.to(self.device)  # shape: (batch_size,)
 
-            #### Use AMP
-            # with torch.autocast(device_type=self.device, dtype=torch.float16):
+            with torch.autocast(device_type=self.device, dtype=torch.float16):
 
             #     # TODO: Get raw logits and attention weights from model
             #     raw_preds, attn_weights = self.model(targets_shifted, lengths)  # shape: (batch_size, seq_len, num_classes) | (batch_size, seq_len, seq_len) | max_len=seq_len
@@ -116,18 +115,15 @@ class LMTrainer(BaseTrainer):
             loss = raw_loss / self.config['training']['gradient_accumulation_steps']
             
             # TODO: Backpropagate the loss
-            #### Use AMP
-            # self.scaler.scale(loss).backward()
-            loss.backward()
+            self.scaler.scale(loss).backward()
         
             # Only update weights after accumulating enough gradients
             if (i + 1) % self.config['training']['gradient_accumulation_steps'] == 0:
-                # self.scaler.step(self.optimizer)
-                self.optimizer.step()
+                self.scaler.step(self.optimizer)
                 # Only step scheduler here if it's not ReduceLROnPlateau
                 if not isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
                     self.scheduler.step()
-                # self.scaler.update()
+                self.scaler.update()
                 self.optimizer.zero_grad()  # Reset gradients after update
 
             # Calculate metrics
